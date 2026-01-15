@@ -8,8 +8,8 @@ export async function delay(min = 300, max = 1200) {
 
 // Helper to simulate random failures (20% chance of failure)
 export function mayFail() {
-    const rand = Math.random();
-    if (rand < 0.2) {
-      throw new Error('Network error');
-    }
+  const rand = Math.random();
+  if (rand < 0.2) {
+    throw new Error('Network error');
+  }
 }
