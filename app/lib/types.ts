@@ -24,3 +24,4 @@ export interface Candidate {
     stage: Stage,  //current state
     activities: Activity[]; // A timeline of stage changes
 }
+
