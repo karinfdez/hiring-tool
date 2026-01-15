@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import candidates from "@/mock_data/candidates.json";
-import { delay, mayFail } from "@/lib/mockApi";
-import { Candidate } from "@/mock_data/types";
+import candidates from "@/app/mock_data/candidates.json";
+import { delay, mayFail } from "@/app/lib/mockApi";
+import { Candidate } from "@/app/lib/types";
 
 export async function GET() {
     await delay();
