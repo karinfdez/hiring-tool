@@ -30,7 +30,16 @@ export async function PATCH(request: Request) {
             );
           }
       
+        // Add new activity to track the stage change
+        const newActivity = {
+            id: crypto.randomUUID(),
+            from: candidate.stage,
+            to: stage,
+            timestamp: Date.now(),
+        };
+        
         candidate.stage = stage;
+        candidate.activities.push(newActivity);
       
         return NextResponse.json(candidate);
     }catch(error){
