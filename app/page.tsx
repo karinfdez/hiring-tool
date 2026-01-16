@@ -4,6 +4,7 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import {useCandidates} from "@/app/hooks/useCandidates";
 import {CandidateRow} from '@/components/candidates/CandidateRow';
 import { Spinner } from '@/components/ui/spinner';
+import { CandidateDetail } from '@/components/candidates/CandidateDetail';
 
 export default function CandidatesPage() {
 
@@ -22,7 +23,7 @@ export default function CandidatesPage() {
   if(isLoading) {
     return (
       <div className="flex h-40 items-center justify-center">
-        <Spinner className="h-6 w-6 text-muted-foreground" />
+        <Spinner className="h-12 w-12 text-muted-foreground" />
       </div>
     )
   }
@@ -36,14 +37,13 @@ export default function CandidatesPage() {
   }
 
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-semibold mb-4">Candidates</h1>
-      
-      <div
+    <div className="flex gap-4">
+      {/* Candidate virtualized list */}
+      <div className="w-1/2">
+        <div
         ref={parentRef}
         className="h-[400px] overflow-auto border rounded"
       >
- 
         <div
           style={{
             height: `${rowVirtualizer.getTotalSize()}px`,
@@ -64,7 +64,12 @@ export default function CandidatesPage() {
           })}
         </div>
       </div>
-
+      </div>
+      
+      {/* Candidate detail */}
+      <div className="w-1/2">
+        <CandidateDetail candidate={candidateId ? data.candidates.find(c => c.id === candidateId) : null} />
+      </div>
     </div>
   );
 }
