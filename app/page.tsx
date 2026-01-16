@@ -96,7 +96,10 @@ export default function CandidatesPage() {
         
         {/* Candidate detail */}
         <div className="w-1/2">
-          <CandidateDetail candidate={candidateId ? data.candidates.find((c: Candidate) => c.id === candidateId) : null} />
+          <CandidateDetail 
+            key={candidateId} 
+            candidate={candidateId ? data.candidates.find((c: Candidate) => c.id === candidateId) : null} 
+          />
         </div>
       </div>
     </div>

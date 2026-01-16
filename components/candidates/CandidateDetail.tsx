@@ -1,7 +1,8 @@
 import { Candidate, Stage } from '@/app/lib/types';
 import { Badge } from '@/components/ui/badge';
+import { useUpdateCandidateStage } from '@/app/hooks/useUpdateCandidateStage';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 type CandidateDetailProps = {
   candidate: Candidate | null;
@@ -31,13 +32,7 @@ const getStageColor = (stage: string) => {
 export function CandidateDetail({ candidate }: CandidateDetailProps) {
   const [selectedStage, setSelectedStage] = useState<Stage | ''>('');
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (candidate) {
-      setSelectedStage(candidate.stage);
-      setError(null); // Clear any previous errors when switching candidates
-    }
-  }, [candidate]);  
+  const updateStage = useUpdateCandidateStage();  
 
   if (!candidate) {
     return (
@@ -52,24 +47,22 @@ export function CandidateDetail({ candidate }: CandidateDetailProps) {
     );
   }
 
-  const handleStageChange = async (newStage: Stage) => {
-    try{
-        const res = await fetch('/api/candidates', {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ candidate, newStage}),
-        });
-
-    if(!res.ok) {
-        throw new Error('Failed to update candidate stage');
-    }
-    
-    return res.json();
-    } catch (error) {
-        setError('Failed to update candidate stage');
-    }
+  const handleStageChange = (newStage: Stage) => {
+    setError(null); // Clear any previous errors
+    updateStage.mutate({
+      id: candidate.id,
+      stage: newStage,
+    }, {
+      onError: (error) => {
+        setError(error instanceof Error ? error.message : 'Failed to update candidate stage');
+        // Reset the select back to empty on error
+        setSelectedStage('');
+      },
+      onSuccess: () => {
+        // Reset the select after successful update
+        setSelectedStage('');
+      }
+    });
   };
 
   return (
