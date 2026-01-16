@@ -1,6 +1,6 @@
 # Hiring Tool
 
-An internal hiring tool UI built with React and TypeScript for managing candidate applications through the hiring pipeline.
+An internal hiring tool UI built with React, TypeScript, React Query, and virtualization for managing candidate applications through the hiring pipeline.
 
 ## Features
 
