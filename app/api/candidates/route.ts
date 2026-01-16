@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
-import candidates from "@/app/mock_data/candidates.json";
+import candidatesData from "@/app/mock_data/candidates.json";
 import { delay, mayFail } from "@/app/lib/mockApi";
 import { Candidate } from "@/app/lib/types";
+
+// Type assertion to ensure the imported JSON matches our Candidate interface
+const candidates = candidatesData as Candidate[];
 
 export async function GET() {
     await delay();
@@ -16,20 +19,21 @@ export async function PATCH(request: Request) {
         mayFail();
 
         const body = await request.json();
-        const { candidate, newStage } = body;
+        const { id, stage } = body;
+
+        const candidate = candidates.find((c) => c.id === id);
 
         if (!candidate) {
-            return NextResponse.json({ error: 'Candidate not found' }, { status: 404 });
-        }
-
-        candidate.stage = newStage;
-
-
-        return NextResponse.json({
-            candidate
-        })
+            return NextResponse.json(
+              { error: 'Candidate not found' },
+              { status: 404 }
+            );
+          }
+      
+        candidate.stage = stage;
+      
+        return NextResponse.json(candidate);
     }catch(error){
-        console.error('Error updating candidate stage:', error);
         return NextResponse.json({ error: 'Failed to update candidate stage' }, { status: 500 });
     }
 }
