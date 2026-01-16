@@ -10,15 +10,6 @@ const ROLES = [
   "Product Designer",
 ];
 
-const STAGES = [
-  "Applied",
-  "Screening",
-  "Interview",
-  "Offer",
-  "Hired",
-  "Rejected",
-];
-
 const FIRST_NAMES = [
   "Alex","Jordan","Taylor","Chris","Morgan","Jamie","Riley","Casey",
   "Avery","Sam","Drew","Cameron","Quinn","Parker","Reese"

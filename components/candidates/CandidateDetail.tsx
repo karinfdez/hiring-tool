@@ -1,10 +1,20 @@
-import { Candidate } from '@/app/lib/types';
+import { Candidate, Stage } from '@/app/lib/types';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState } from 'react';
 
 type CandidateDetailProps = {
   candidate: Candidate | null;
 };
+
+const STAGES: Stage[] = [
+  'Applied',
+  'Screening',
+  'Interview',
+  'Offer',
+  'Hired',
+  'Rejected',
+];
 
 const getStageColor = (stage: string) => {
   switch (stage) {
@@ -19,6 +29,8 @@ const getStageColor = (stage: string) => {
 };
 
 export function CandidateDetail({ candidate }: CandidateDetailProps) {
+  const [selectedStage, setSelectedStage] = useState<Stage | ''>('');
+
   if (!candidate) {
     return (
       <Card className="h-full">
@@ -32,6 +44,11 @@ export function CandidateDetail({ candidate }: CandidateDetailProps) {
     );
   }
 
+  const handleStageChange = (newStage: Stage) => {
+    // TODO: Implement API call to update candidate stage
+    console.log(`Changing ${candidate.name} from ${candidate.stage} to ${newStage}`);
+  };
+
   return (
     <Card className="h-full flex flex-col">
       <div className="flex-1 flex flex-col justify-center items-center p-8">
@@ -43,6 +60,31 @@ export function CandidateDetail({ candidate }: CandidateDetailProps) {
           <Badge className={`${getStageColor(candidate.stage)} font-medium px-4 py-1 text-sm`}>
             {candidate.stage}
           </Badge>
+          
+          <div className="mt-6">
+            <label htmlFor="stage-select" className="block text-sm font-medium text-gray-700 mb-2">
+              Change Stage
+            </label>
+            <select
+              id="stage-select"
+              value={selectedStage}
+              onChange={(e) => {
+                const newStage = e.target.value as Stage;
+                setSelectedStage(newStage);
+                if (newStage && newStage !== candidate.stage) {
+                  handleStageChange(newStage);
+                }
+              }}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+            >
+              <option value="">Select new stage...</option>
+              {STAGES.filter(stage => stage !== candidate.stage).map(stage => (
+                <option key={stage} value={stage} disabled={stage === candidate.stage}>
+                  {stage}
+                </option>
+              ))}
+            </select>
+          </div>
           
           <div className="mt-8">
             <h3 className="font-semibold text-gray-900 mb-4 flex items-center justify-center">
