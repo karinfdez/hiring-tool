@@ -2,12 +2,12 @@
 import { useState, useRef } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import {useCandidates} from "@/app/hooks/useCandidates";
-import { Candidate } from "@/app/lib/types";
+import {CandidateRow} from '@/components/candidates/CandidateRow';
 
 export default function CandidatesPage() {
 
   const {data, isLoading, error} = useCandidates()
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [ candidateId, setSelectedCandidateId] = useState<string | null>(null);
   const parentRef = useRef<HTMLDivElement | null>(null);
 
   const rowVirtualizer = useVirtualizer({
@@ -36,7 +36,7 @@ export default function CandidatesPage() {
       
       <div
         ref={parentRef}
-        className="h-[600px] overflow-auto border rounded"
+        className="h-[400px] overflow-auto border rounded"
       >
  
         <div
@@ -49,18 +49,12 @@ export default function CandidatesPage() {
             const candidate = data?.candidates[virtualRow.index];
 
             return (
-              <div
+              <CandidateRow
                 key={candidate?.id}
-                className="absolute left-0 right-0 border-b p-3"
-                style={{
-                  transform: `translateY(${virtualRow.start}px)`,
-                }}
-              >
-                <div className="font-medium">{candidate?.name}</div>
-                <div className="text-sm text-gray-600">
-                  {candidate?.role} · {candidate?.stage}
-                </div>
-              </div>
+                candidate={candidate}
+                isSelected={candidateId === candidate?.id}
+                onSelect={setSelectedCandidateId}
+              />
             );
           })}
         </div>

@@ -10,7 +10,7 @@ export async function GET() {
     })
 }
 
-export default async function PATCH(request: Request) {
+export async function PATCH(request: Request) {
     await delay();
     mayFail();
 

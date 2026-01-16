@@ -14,7 +14,7 @@ export interface Activity {
     id: string,
     from?: Stage,
     to: Stage,
-    timestamp: Date,
+    timestamp: number
 }
 
 export interface Candidate {
