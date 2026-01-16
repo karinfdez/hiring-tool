@@ -16,8 +16,8 @@ export default function CandidatesPage() {
   const rowVirtualizer = useVirtualizer({
     count: data?.candidates.length || 0,  //how many ites exist
     getScrollElement: () => parentRef.current, //Which DOM element is scrolling
-    estimateSize: () => 72,  // estimated height of one row (px)
-    overscan: 5,  // Reduced overscan for smoother performance
+    estimateSize: () => 100,  // estimated height of one row (px)
+    overscan: 5, 
     scrollPaddingStart: 0,
     scrollPaddingEnd: 0,
   });
@@ -30,7 +30,7 @@ export default function CandidatesPage() {
           <h1 className="text-3xl font-bold text-gray-900">Candidates</h1>
           <p className="text-gray-600 mt-2">Manage and review candidate applications</p>
         </div>
-        <div className="flex flex-col items-center justify-center h-[600px] space-y-4">
+        <div className="flex flex-col items-center justify-center h-[700px] space-y-4">
           <Spinner className="h-12 w-12 text-muted-foreground" />
           <p className="text-gray-600 text-lg">Fetching candidates...</p>
         </div>
@@ -47,18 +47,18 @@ export default function CandidatesPage() {
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Candidates</h1>
-        <p className="text-gray-600 mt-2">Manage and review candidate applications</p>
+    <div className="p-4 sm:p-6 max-w-7xl mx-auto">
+      <div className="mb-4 sm:mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Candidates</h1>
+        <p className="text-gray-600 mt-2 text-sm sm:text-base">Manage and review candidate applications</p>
       </div>
       
-      <div className="flex gap-6 h-[600px]">
+      <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
         {/* Candidate virtualized list */}
-        <div className="w-1/2">
+        <div className="w-full lg:w-1/2">
           <div
             ref={parentRef}
-            className="h-full overflow-auto bg-white border border-gray-200 rounded-lg shadow-sm"
+            className="h-80 lg:h-[600px] overflow-auto bg-white border border-gray-200 rounded-lg shadow-sm"
             style={{ scrollBehavior: 'smooth' }}
           >
         <div
@@ -95,7 +95,7 @@ export default function CandidatesPage() {
         </div>
         
         {/* Candidate detail */}
-        <div className="w-1/2">
+        <div className="w-full lg:w-1/2">
           <CandidateDetail 
             key={candidateId} 
             candidate={candidateId ? data.candidates.find((c: Candidate) => c.id === candidateId) : null} 
