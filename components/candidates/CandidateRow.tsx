@@ -27,7 +27,7 @@ export function CandidateRow({
   return (
     <div
       onClick={() => onSelect(candidate.id)}
-      className={`border-b border-gray-100 p-4 cursor-pointer transition-colors hover:bg-gray-50 ${
+      className={`border-b border-gray-100 p-4 cursor-pointer transition-colors hover:bg-gray-50 bg-white ${
         isSelected ? 'bg-blue-50 border-blue-200' : ''
       }`}
     >

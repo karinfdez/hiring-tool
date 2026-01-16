@@ -17,7 +17,9 @@ export default function CandidatesPage() {
     count: data?.candidates.length || 0,  //how many ites exist
     getScrollElement: () => parentRef.current, //Which DOM element is scrolling
     estimateSize: () => 72,  // estimated height of one row (px)
-    overscan: 10,  // How many extra rows to render above and below the viewport
+    overscan: 5,  // Reduced overscan for smoother performance
+    scrollPaddingStart: 0,
+    scrollPaddingEnd: 0,
   });
 
 
@@ -57,6 +59,7 @@ export default function CandidatesPage() {
           <div
             ref={parentRef}
             className="h-full overflow-auto bg-white border border-gray-200 rounded-lg shadow-sm"
+            style={{ scrollBehavior: 'smooth' }}
           >
         <div
           style={{
@@ -68,12 +71,23 @@ export default function CandidatesPage() {
             const candidate = data?.candidates[virtualRow.index];
 
             return (
-              <CandidateRow
+              <div
                 key={candidate?.id}
-                candidate={candidate}
-                isSelected={candidateId === candidate?.id}
-                onSelect={setSelectedCandidateId}
-              />
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: `${virtualRow.size}px`,
+                  transform: `translateY(${virtualRow.start}px)`,
+                }}
+              >
+                <CandidateRow
+                  candidate={candidate}
+                  isSelected={candidateId === candidate?.id}
+                  onSelect={setSelectedCandidateId}
+                />
+              </div>
             );
           })}
           </div>
