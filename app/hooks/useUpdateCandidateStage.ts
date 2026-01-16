@@ -44,7 +44,6 @@ export function useUpdateCandidateStage() {
               };
             }
           );
-          // return the previous data for rollback
           return { previousData };
       }, 
       mutationFn: async ({
@@ -64,6 +63,7 @@ export function useUpdateCandidateStage() {
           );
           }
       }, 
+      // ensures the cache is synchronized with the server 
       onSettled: () => {
         queryClient.invalidateQueries({ queryKey: ['candidates'] });
       },    

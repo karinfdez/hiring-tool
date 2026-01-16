@@ -9,7 +9,6 @@ export type Stage =
 
 
 
-// A record of an stage change
 export interface Activity {
     id: string,
     from?: Stage,
