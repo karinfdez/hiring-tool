@@ -3,6 +3,7 @@ import { useState, useRef } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import {useCandidates} from "@/app/hooks/useCandidates";
 import {CandidateRow} from '@/components/candidates/CandidateRow';
+import { Spinner } from '@/components/ui/spinner';
 
 export default function CandidatesPage() {
 
@@ -19,7 +20,11 @@ export default function CandidatesPage() {
 
 
   if(isLoading) {
-    return <div className="p-4">Loading candidates…</div>;
+    return (
+      <div className="flex h-40 items-center justify-center">
+        <Spinner className="h-6 w-6 text-muted-foreground" />
+      </div>
+    )
   }
 
   if(error) {
