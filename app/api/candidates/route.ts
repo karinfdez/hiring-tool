@@ -3,7 +3,6 @@ import candidatesData from "@/app/mock_data/candidates.json";
 import { delay, mayFail } from "@/app/lib/mockApi";
 import { Candidate } from "@/app/lib/types";
 
-// Type assertion to ensure the imported JSON matches our Candidate interface
 const candidates = candidatesData as Candidate[];
 
 export async function GET() {
@@ -30,7 +29,6 @@ export async function PATCH(request: Request) {
             );
           }
       
-        // Add new activity to track the stage change
         const newActivity = {
             id: crypto.randomUUID(),
             from: candidate.stage,
@@ -42,7 +40,7 @@ export async function PATCH(request: Request) {
         candidate.activities.push(newActivity);
       
         return NextResponse.json(candidate);
-    }catch(error){
+    } catch (error) {
         return NextResponse.json({ error: 'Failed to update candidate stage' }, { status: 500 });
     }
 }
