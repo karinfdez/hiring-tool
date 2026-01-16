@@ -27,18 +27,20 @@ export function CandidateRow({
   return (
     <div
       onClick={() => onSelect(candidate.id)}
-      className={`border-b border-gray-100 p-4 cursor-pointer transition-colors hover:bg-gray-50 bg-white ${
+      className={`border-b border-gray-100 p-3 sm:p-4 cursor-pointer transition-colors hover:bg-gray-50 bg-white ${
         isSelected ? 'bg-blue-50 border-blue-200' : ''
       }`}
     >
-      <div className="flex items-center justify-between">
-        <div className="flex-1">
-          <div className="font-semibold text-gray-900 mb-1">{candidate.name}</div>
-          <div className="text-sm text-gray-600">{candidate.role}</div>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+        <div className="flex-1 min-w-0">
+          <div className="font-semibold text-gray-900 mb-1 text-sm sm:text-base truncate">{candidate.name}</div>
+          <div className="text-xs sm:text-sm text-gray-600 truncate">{candidate.role}</div>
         </div>
-        <Badge className={`${getStageColor(candidate.stage)} border-0 font-medium`}>
-          {candidate.stage}
-        </Badge>
+        <div className="flex-shrink-0">
+          <Badge className={`${getStageColor(candidate.stage)} border-0 font-medium text-xs sm:text-sm`}>
+            {candidate.stage}
+          </Badge>
+        </div>
       </div>
     </div>
   );
