@@ -13,7 +13,7 @@ export async function updateCandidateStage(
   });
 
   if (!res.ok) {
-    throw new Error('Failed to update candidate stage');
+    throw new Error('Failed to update candidate stage. Please try again');
   }
 
   return res.json();
