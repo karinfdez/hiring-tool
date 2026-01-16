@@ -1,7 +1,7 @@
 import { Candidate, Stage } from '@/app/lib/types';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useState } from 'react';
+import { Card, CardContent, CardTitle } from '@/components/ui/card';
+import { useState, useEffect } from 'react';
 
 type CandidateDetailProps = {
   candidate: Candidate | null;
@@ -30,6 +30,14 @@ const getStageColor = (stage: string) => {
 
 export function CandidateDetail({ candidate }: CandidateDetailProps) {
   const [selectedStage, setSelectedStage] = useState<Stage | ''>('');
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (candidate) {
+      setSelectedStage(candidate.stage);
+      setError(null); // Clear any previous errors when switching candidates
+    }
+  }, [candidate]);  
 
   if (!candidate) {
     return (
@@ -44,9 +52,24 @@ export function CandidateDetail({ candidate }: CandidateDetailProps) {
     );
   }
 
-  const handleStageChange = (newStage: Stage) => {
-    // TODO: Implement API call to update candidate stage
-    console.log(`Changing ${candidate.name} from ${candidate.stage} to ${newStage}`);
+  const handleStageChange = async (newStage: Stage) => {
+    try{
+        const res = await fetch('/api/candidates', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ candidate, newStage}),
+        });
+
+    if(!res.ok) {
+        throw new Error('Failed to update candidate stage');
+    }
+    
+    return res.json();
+    } catch (error) {
+        setError('Failed to update candidate stage');
+    }
   };
 
   return (
@@ -71,9 +94,7 @@ export function CandidateDetail({ candidate }: CandidateDetailProps) {
               onChange={(e) => {
                 const newStage = e.target.value as Stage;
                 setSelectedStage(newStage);
-                if (newStage && newStage !== candidate.stage) {
-                  handleStageChange(newStage);
-                }
+                handleStageChange(newStage);
               }}
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
             >
@@ -84,6 +105,11 @@ export function CandidateDetail({ candidate }: CandidateDetailProps) {
                 </option>
               ))}
             </select>
+            {error && (
+              <div className="mt-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md p-2">
+                {error}
+              </div>
+            )}
           </div>
           
           <div className="mt-8">

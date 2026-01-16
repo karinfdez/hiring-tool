@@ -11,32 +11,26 @@ export async function GET() {
 }
 
 export async function PATCH(request: Request) {
-    await delay();
-    mayFail();
+    try {   
+        await delay();
+        mayFail();
 
-    const body = await request.json();
-    const { id, stage } = body;
+        const body = await request.json();
+        const { candidate, newStage } = body;
 
-    const candidate = candidates.find((c: Candidate) => c.id === id);
-    if (!candidate) {
-        return NextResponse.json({ error: 'Candidate not found' }, { status: 404 });
+        if (!candidate) {
+            return NextResponse.json({ error: 'Candidate not found' }, { status: 404 });
+        }
+
+        candidate.stage = newStage;
+
+
+        return NextResponse.json({
+            candidate
+        })
+    }catch(error){
+        console.error('Error updating candidate stage:', error);
+        return NextResponse.json({ error: 'Failed to update candidate stage' }, { status: 500 });
     }
-
-    // const activityHistory = candidate.activities;
-    // const lastActivity = activityHistory[activityHistory.length - 1];
-    // const newActivity = {
-    //     id: `act_${id}_${activityHistory.length + 1}`,
-    //     from: lastActivity.to,
-    //     to: stage,
-    //     timestamp: Date.now()
-    // };
-
-    candidate.stage = stage;
-
-    return NextResponse.json({
-        ...candidate,
-        stage,
-        // activities: [...activityHistory, newActivity]
-    })
 }
     
